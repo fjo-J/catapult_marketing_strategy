@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catapult Strategy Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel (JSX変換用) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // --- アイコンコンポーネント定義 (Lucide IconのSVGデータ) ---
+        const Icon = ({ children, color = "currentColor", size = 24, className = "" }) => (
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width={size} 
+                height={size} 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke={color} 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className={className}
+            >
+                {children}
+            </svg>
+        );
+
+        const Cpu = (props) => (
+            <Icon {...props}>
+                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                <rect x="9" y="9" width="6" height="6"></rect>
+                <line x1="9" y1="1" x2="9" y2="4"></line>
+                <line x1="15" y1="1" x2="15" y2="4"></line>
+                <line x1="9" y1="20" x2="9" y2="23"></line>
+                <line x1="15" y1="20" x2="15" y2="23"></line>
+                <line x1="20" y1="9" x2="23" y2="9"></line>
+                <line x1="20" y1="14" x2="23" y2="14"></line>
+                <line x1="1" y1="9" x2="4" y2="9"></line>
+                <line x1="1" y1="14" x2="4" y2="14"></line>
+            </Icon>
+        );
+
+        const Users = (props) => (
+            <Icon {...props}>
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </Icon>
+        );
+
+        const DollarSign = (props) => (
+            <Icon {...props}>
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </Icon>
+        );
+
+        const Zap = (props) => (
+            <Icon {...props}>
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </Icon>
+        );
+
+        const Search = (props) => (
+            <Icon {...props}>
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </Icon>
+        );
+
+        const TrendingUp = (props) => (
+            <Icon {...props}>
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+            </Icon>
+        );
+
+        const ArrowRight = (props) => (
+            <Icon {...props}>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </Icon>
+        );
+
+        // --- メインコンポーネント ---
+        const StrategyDashboard = () => {
+            return (
+                <div className="min-h-screen bg-gray-50 p-4 md:p-8 font-sans text-gray-800">
+                
+                {/* Header Section */}
+                <header className="mb-8 bg-white p-6 rounded-2xl shadow-sm border-l-8 border-cyan-600">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div>
+                        <div className="flex items-center gap-2 text-cyan-600 mb-1">
+                        <Cpu size={20} />
+                        <span className="font-bold tracking-wider text-sm uppercase">Volume & Automation Plan</span>
+                        </div>
+                        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
+                        「catapult」行動量最大化戦略
+                        </h1>
+                        <p className="text-gray-500">
+                        Ops強化：AUBA × LinkedIn自動化 × 人海戦術 | 予算：40万円/月
+                        </p>
+                    </div>
+                    <div className="mt-4 md:mt-0 bg-cyan-50 px-4 py-2 rounded-lg text-cyan-800 font-bold text-lg">
+                        Focus: High Volume Execution
+                    </div>
+                    </div>
+                </header>
+
+                {/* Top Grid: Concept & Budget */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    
+                    {/* Concept Card */}
+                    <div className="lg:col-span-1 bg-gradient-to-br from-cyan-900 to-slate-900 text-white p-6 rounded-2xl shadow-lg flex flex-col justify-center">
+                    <div className="flex items-center gap-3 mb-4">
+                        <Users className="text-cyan-400" size={32} />
+                        <h2 className="text-2xl font-bold">人海戦術 × Tool</h2>
+                    </div>
+                    <p className="text-cyan-100 mb-6 leading-relaxed">
+                        不確実な成果報酬を捨て、
+                        <strong className="text-white border-b-2 border-cyan-400 mx-1">「作業量」</strong>
+                        で確実にリーチ数を稼ぐ。
+                        <br/>浮いた予算で
+                        <strong className="text-white border-b-2 border-yellow-400 mx-1">「低単価Ops部隊」</strong>
+                        を厚く確保。ツールと手作業を回し続け、物理的なアプローチ数を最大化する。
+                    </p>
+                    <div className="bg-white/10 p-3 rounded-lg text-center backdrop-blur-sm">
+                        <span className="block text-sm text-cyan-200">Execution</span>
+                        <span className="text-xl font-bold">Ops予算 23万円 (57%)</span>
+                    </div>
+                    </div>
+
+                    {/* Budget Allocation Chart */}
+                    <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className="flex items-center gap-2 mb-6">
+                        <DollarSign className="text-cyan-600" />
+                        <h3 className="text-xl font-bold text-gray-800">予算配分：40万円 / 月 (Ops特化版)</h3>
+                    </div>
+                    
+                    <div className="flex flex-col gap-4">
+                        {/* Bar 1: Ops (Execution) */}
+                        <div className="relative">
+                        <div className="flex justify-between text-sm font-bold mb-1">
+                            <span className="text-cyan-700 flex items-center gap-1"><Users size={14}/> Ops：作業特化型スタッフ (人海戦術)</span>
+                            <span>23万円 (57.5%)</span>
+                        </div>
+                        <div className="w-full bg-gray-100 rounded-full h-8 overflow-hidden flex">
+                            <div className="bg-cyan-600 h-full w-[57.5%] flex items-center px-3 text-white text-xs font-bold">
+                            作業者 1~2名 (時給/固定)
+                            </div>
+                        </div>
+                        <p className="text-xs text-gray-400 mt-1 ml-1">※戦略不要。マニュアル通りにAUBAスカウト送付・ツール監視を行う実働費。</p>
+                        </div>
+
+                        {/* Bar 2: Platform (AUBA) */}
+                        <div className="relative">
+                        <div className="flex justify-between text-sm font-bold mb-1">
+                            <span className="text-blue-700 flex items-center gap-1"><Search size={14}/> Platform：AUBA (リード源)</span>
+                            <span>15万円 (37.5%)</span>
+                        </div>
+                        <div className="w-full bg-gray-100 rounded-full h-8 overflow-hidden flex">
+                            <div className="bg-blue-600 h-full w-[37.5%] flex items-center px-3 text-white text-xs font-bold">
+                            媒体費・スカウト通数
+                            </div>
+                        </div>
+                        </div>
+
+                        {/* Bar 3: Tools */}
+                        <div className="relative">
+                        <div className="flex justify-between text-sm font-bold mb-1">
+                            <span className="text-slate-600 flex items-center gap-1"><Zap size={14}/> Tools：Dripify & LP</span>
+                            <span>2万円 (5%)</span>
+                        </div>
+                        <div className="w-full bg-gray-100 rounded-full h-8 overflow-hidden flex">
+                            <div className="bg-slate-500 h-full w-[5%] flex items-center px-3 text-white text-xs font-bold">
+                            ツール
+                            </div>
+                        </div>
+                        <p className="text-xs text-gray-400 mt-1 ml-1">※ツール費は安価に抑え、残りをすべて「人」へ回す。</p>
+                        </div>
+
+                    </div>
+                    </div>
+                </div>
+
+                {/* 2 Main Pillars + Ops Section */}
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <span className="bg-cyan-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">2</span>
+                    <span>実行施策の2本柱とOps体制</span>
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    
+                    {/* Card 1 */}
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-cyan-500 hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center text-cyan-600 mb-4">
+                        <Zap size={24} />
+                    </div>
+                    <h4 className="text-lg font-bold mb-2">1. LinkedIn (Auto)</h4>
+                    <p className="text-sm text-gray-500 mb-4 font-mono bg-gray-100 inline-block px-2 py-1 rounded">Dripify: 月1.2万円</p>
+                    <ul className="text-sm text-gray-600 space-y-2">
+                        <li className="flex items-start gap-2">
+                        <span className="text-cyan-500 mt-1">●</span>
+                        <span><strong>自動化:</strong> OpsスタッフがDripifyをセットし、毎日100件のアプローチを自動実行。</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                        <span className="text-cyan-500 mt-1">●</span>
+                        <span><strong>役割:</strong> Opsはエラー監視と、反応があった場合の一次返信のみ対応。</span>
+                        </li>
+                    </ul>
+                    </div>
+
+                    {/* Card 2 */}
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-blue-500 hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4">
+                        <Search size={24} />
+                    </div>
+                    <h4 className="text-lg font-bold mb-2">2. AUBA (Manual)</h4>
+                    <p className="text-sm text-gray-500 mb-4 font-mono bg-gray-100 inline-block px-2 py-1 rounded">媒体費: 月15万円</p>
+                    <ul className="text-sm text-gray-600 space-y-2">
+                        <li className="flex items-start gap-2">
+                        <span className="text-blue-500 mt-1">●</span>
+                        <span><strong>人海戦術:</strong> 自動化できないスカウト送信を、Opsスタッフが手作業で大量に送る。</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                        <span className="text-blue-500 mt-1">●</span>
+                        <span><strong>質より量:</strong> 「定型文＋1行カスタマイズ」で送信数を稼ぐ運用に振り切る。</span>
+                        </li>
+                    </ul>
+                    </div>
+
+                    {/* Card 3 */}
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-purple-500 hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mb-4">
+                        <Users size={24} />
+                    </div>
+                    <h4 className="text-lg font-bold mb-2">Ops Team (Workers)</h4>
+                    <p className="text-sm text-gray-500 mb-4 font-mono bg-gray-100 inline-block px-2 py-1 rounded">人件費: 月23万円</p>
+                    <ul className="text-sm text-gray-600 space-y-2">
+                        <li className="flex items-start gap-2">
+                        <span className="text-purple-500 mt-1">●</span>
+                        <span><strong>要件:</strong> 「優秀さ」不要。マニュアル通りに正確に作業できるワーカーを採用。</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                        <span className="text-purple-500 mt-1">●</span>
+                        <span><strong>規模:</strong> 月150時間程度（または2名体制）の稼働を確保し、事務作業を全代行。</span>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+
+                {/* Roadmap Section */}
+                <div className="bg-white p-6 rounded-2xl shadow-sm mb-8">
+                    <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <TrendingUp className="text-gray-600" />
+                    アクションプラン (即実行)
+                    </h3>
+                    
+                    <div className="relative">
+                    {/* Connector Line */}
+                    <div className="absolute top-8 left-0 w-full h-1 bg-gray-100 hidden md:block"></div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {/* Month 1 */}
+                        <div className="relative bg-white p-4 border border-gray-200 rounded-xl z-10">
+                        <div className="absolute -top-3 left-4 bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded">
+                            Day 1-7
+                        </div>
+                        <h4 className="font-bold text-lg mt-2 mb-2">Ops採用 & マニュアル化</h4>
+                        <p className="text-xs text-gray-500 mb-3">Lancers/CrowdWorksで募集 / 作業手順書作成</p>
+                        <div className="bg-slate-50 p-2 rounded text-center border border-slate-100">
+                            <span className="block text-xs text-slate-600 font-bold">Action</span>
+                            <span className="text-sm font-bold text-slate-800">「コピペ作業募集」開始</span>
+                        </div>
+                        </div>
+
+                        {/* Month 2 */}
+                        <div className="relative bg-white p-4 border border-gray-200 rounded-xl z-10">
+                        <div className="absolute -top-3 left-4 bg-cyan-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            Day 8-30
+                        </div>
+                        <h4 className="font-bold text-lg mt-2 mb-2">大量稼働開始</h4>
+                        <p className="text-xs text-gray-500 mb-3">Dripifyフル回転 / AUBAスカウト毎日送信</p>
+                        <div className="bg-cyan-50 p-2 rounded text-center border border-cyan-100">
+                            <span className="block text-xs text-cyan-700 font-bold">KPI</span>
+                            <span className="text-xl font-bold text-cyan-900">アプローチ 2,000件/月</span>
+                        </div>
+                        </div>
+
+                        {/* Month 3 */}
+                        <div className="relative bg-white p-4 border border-gray-200 rounded-xl z-10">
+                        <div className="absolute -top-3 left-4 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            Month 2
+                        </div>
+                        <h4 className="font-bold text-lg mt-2 mb-2">Waitlist転換</h4>
+                        <p className="text-xs text-gray-500 mb-3">反応があったリードをWaitlistへ誘導・選別</p>
+                        <div className="bg-blue-50 p-2 rounded text-center border border-blue-100">
+                            <span className="block text-xs text-blue-700 font-bold">Next</span>
+                            <span className="text-sm font-bold text-blue-900">リスト枯渇対策 (Target拡張)</span>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                {/* Footer / CTA */}
+                <div className="bg-slate-800 text-white p-6 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>
+                    <h4 className="text-lg font-bold mb-1">アクションプラン</h4>
+                    <p className="text-slate-300 text-sm">
+                        1. <strong>作業者募集要項</strong> の作成（「ツール監視・メール送信業務」として募集）<br/>
+                        2. <strong>Dripify</strong> 契約とAUBAアカウント設定
+                    </p>
+                    </div>
+                    <button className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded-xl font-bold transition-colors flex items-center gap-2">
+                    Ops募集文面を作成する <ArrowRight size={18} />
+                    </button>
+                </div>
+
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<StrategyDashboard />);
+    </script>
+</body>
+</html>
